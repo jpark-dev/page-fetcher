@@ -52,16 +52,21 @@ const configureStdInt = () => {
 
 const writeFileAndPrint = () => {
   request(uri, (error, response, body) => {
-    fs.writeFile(path, body, (err) => {
-      if (err) {
-        console.log(err);
-        process.exit();
-
-      } else {
-        console.log(`Downloaded and saved ${body.length} bytes to ${path}`);
-        process.exit();
-      }
-    });
+    if (response !== undefined) {
+      fs.writeFile(path, body, (err) => {
+        if (err) {
+          console.log(err);
+          process.exit();
+          
+        } else {
+          console.log(`Downloaded and saved ${body.length} bytes to ${path}`);
+          process.exit();
+        }
+      });
+    } else {
+      console.log(`Failed to retreive data from the given url`);
+      process.exit();
+    }
   });
 }
 
